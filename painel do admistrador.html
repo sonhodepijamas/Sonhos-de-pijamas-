@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel Admin - Sonho de Pijamas</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Montserrat:wght@600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+
+    <div class="admin-container">
+        
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <div class="sidebar-topo">
+                <div class="logo-admin">🌙 Painel Sonho</div>
+                <ul class="sidebar-menu">
+                    <li class="ativo"><a href="#">📦 Produtos</a></li>
+                </ul>
+            </div>
+            <a href="index.html" class="btn-sair">⬅️ Ver Site</a>
+        </aside>
+        
+        <!-- CONTEÚDO PRINCIPAL -->
+        <main class="conteudo-principal">
+            
+            <div class="header-admin">
+                <h1>Gerenciar Catálogo</h1>
+                <button class="btn-primary" onclick="document.getElementById('cadastro').scrollIntoView({behavior: 'smooth'})">+ Novo Pijama</button>
+            </div>
+
+            <!-- ESTATÍSTICAS RÁPIDAS -->
+            <div class="cards-resumo">
+                <div class="card-mini"><p>Total Produtos</p><span id="qtd-total">0</span></div>
+                <div class="card-mini"><p>Feminino</p><span id="qtd-fem">0</span></div>
+                <div class="card-mini"><p>Infantil</p><span id="qtd-inf">0</span></div>
+            </div>
+
+            <!-- FORMULÁRIO DE CADASTRO -->
+            <section class="secao-cadastro" id="cadastro">
+                <h2>Adicionar Novo Produto</h2>
+                <form class="form-grid" id="form-produto">
+                    <div class="form-grupo">
+                        <label>Nome do Pijama</label>
+                        <input type="text" id="prod-nome" placeholder="Ex: Americano Cetim Girafa" required>
+                    </div>
+                    <div class="form-grupo">
+                        <label>Preço (R$)</label>
+                        <input type="number" step="0.01" id="prod-preco" placeholder="Ex: 89.90" required>
+                    </div>
+                    <div class="form-grupo">
+                        <label>Categoria</label>
+                        <select id="prod-categoria">
+                            <option value="feminino">Feminino</option>
+                            <option value="infantil">Infantil</option>
+                        </select>
+                    </div>
+                    <div class="form-grupo">
+                        <label>URL da Imagem / Nome do Arquivo</label>
+                        <input type="text" id="prod-img" placeholder="Ex: baby alça.jpeg" required>
+                    </div>
+                    <div class="form-grupo total">
+                        <button type="submit" class="btn-primary">Salvar Produto no Catálogo</button>
+                    </div>
+                </form>
+            </section>
+
+            <!-- LISTAGEM ATUAL -->
+            <section class="secao-tabela">
+                <div class="tabela-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Foto</th>
+                                <th>Nome</th>
+                                <th>Categoria</th>
+                                <th>Preço</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabela-produtos">
+                            <!-- Injetado dinamicamente -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <script>
+        const pijamasPadrao = [
+            { id: 1, nome: "Baby Alça Hello kitty", preco: 53.00, categoria: "feminino", img: "baby alça (2).jpeg" },
+            { id: 2, nome: "Camisola Mia", preco: 58.00, categoria: "feminino", img: "WhatsApp Image 2026-07-15 at 12.56.06.jpeg" },
+            { id: 3, nome: "Baby Sonho M. Super Poderosas", preco: 64.00, categoria: "infantil", img: "baby alça.jpeg" },
+            { id: 4, nome: "Americano Snoopy", preco: 100.00, categoria: "infantil", img: "babysonho.jpeg.jpeg" }
+        ];
+
+        let produtos = [];
+        const dadosLocais = localStorage.getItem('produtos_catalogo');
+
+        if (dadosLocais === null) {
+            localStorage.setItem('produtos_catalogo', JSON.stringify(pijamasPadrao));
+            produtos = pijamasPadrao;
+        } else {
+            produtos = JSON.parse(dadosLocais);
+        }
+
+        function atualizarTabelaAdmin() {
+            const tbody = document.getElementById('tabela-produtos');
+            if(!tbody) return;
+            
+            tbody.innerHTML = "";
+            
+            if (produtos.length === 0) {
+                tbody.innerHTML = "<tr><td colspan='5' style='text-align: center; padding: 30px; opacity: 0.5;'>Nenhum pijama cadastrado.</td></tr>";
+            } else {
+                produtos.forEach((prod, index) => {
+                    tbody.innerHTML += `
+                        <tr>
+                            <td><img src="${prod.img}" class="img-tabela" alt="Produto" onerror="this.src='https://via.placeholder.com/50'"></td>
+                            <td><b>${prod.nome}</b></td>
+                            <td><span class="tag-categoria ${prod.categoria}">${prod.categoria}</span></td>
+                            <td>R$ ${Number(prod.preco).toFixed(2).replace('.', ',')}</td>
+                            <td class="acoes">
+                                <button class="btn-acao excluir" onclick="excluirProduto(${index})">⚠️ Excluir</button>
+                            </td>
+                        </tr>
+                    `;
+                });
+            }
+
+            // Atualiza os contadores
+            document.getElementById('qtd-total').innerText = produtos.length;
+            document.getElementById('qtd-fem').innerText = produtos.filter(p => p.categoria === 'feminino').length;
+            document.getElementById('qtd-inf').innerText = produtos.filter(p => p.categoria === 'infantil').length;
+        }
+
+        // Adição de produtos
+        document.getElementById('form-produto').addEventListener('submit', function(e) {
+            e.preventDefault(); 
+            
+            const nome = document.getElementById('prod-nome').value;
+            const preco = parseFloat(document.getElementById('prod-preco').value);
+            const categoria = document.getElementById('prod-categoria').value;
+            const img = document.getElementById('prod-img').value;
+
+            const novo = {
+                id: Date.now(), 
+                nome: nome,
+                preco: preco,
+                categoria: categoria,
+                img: img
+            };
+
+            produtos.push(novo);
+            localStorage.setItem('produtos_catalogo', JSON.stringify(produtos));
+            
+            atualizarTabelaAdmin();
+            this.reset();
+            alert("Pijama cadastrado com sucesso!");
+        });
+
+        // Exclusão definitiva
+        function excluirProduto(posicao) {
+            const pijamaNome = produtos[posicao].nome;
+            if (confirm(`Tem certeza de que deseja excluir o pijama "${pijamaNome}"?`)) {
+                produtos.splice(posicao, 1);
+                localStorage.setItem('produtos_catalogo', JSON.stringify(produtos));
+                atualizarTabelaAdmin();
+                alert("Produto removido com sucesso!");
+            }
+        }
+
+        window.onload = atualizarTabelaAdmin;
+    </script>
+
+</body>
+</html>
