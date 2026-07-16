@@ -1,6 +1,4 @@
-/* ==========================================
-   CONFIGURAÇÕES GERAIS E RESETS
-   ========================================== */
+
 * {
     margin: 0;
     padding: 0;
@@ -10,8 +8,8 @@
 
 :root {
     --bg-fundo: #f8f9fc;
-    --sidebar-bg: #1e1b4b; /* Azul escuro/roxo profundo aconchegante */
-    --primary: #6366f1; /* Indigo vibrante */
+    --sidebar-bg: #1e1b4b;
+    --primary: #6366f1; 
     --primary-hover: #4f46e5;
     --texto-escuro: #1e293b;
     --texto-claro: #f8fafc;
@@ -19,9 +17,8 @@
     --border-color: #e2e8f0;
     --bg-card: #ffffff;
     
-    /* Categorias */
-    --categoria-fem: #ec4899; /* Rosa */
-    --categoria-inf: #06b6d4; /* Azul turquesa */
+    --categoria-fem: #ec4899; 
+    --categoria-inf: #06b6d4; 
 }
 
 body {
@@ -30,18 +27,12 @@ body {
     line-height: 1.5;
 }
 
-/* ==========================================
-   LAYOUT PRINCIPAL (GRID)
-   ========================================== */
 .admin-container {
     display: grid;
     grid-template-columns: 260px 1fr;
     min-height: 100vh;
 }
 
-/* ==========================================
-   SIDEBAR (MENU LATERAL)
-   ========================================== */
 .sidebar {
     background-color: var(--sidebar-bg);
     color: var(--texto-claro);
@@ -114,9 +105,6 @@ body {
     color: white;
 }
 
-/* ==========================================
-   CONTEÚDO PRINCIPAL
-   ========================================== */
 .conteudo-principal {
     padding: 40px;
     max-width: 1200px;
@@ -157,9 +145,6 @@ body {
     box-shadow: 0 6px 14px rgba(99, 102, 241, 0.3);
 }
 
-/* ==========================================
-   CARDS DE ESTATÍSTICA (RESUMO)
-   ========================================== */
 .cards-resumo {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -191,13 +176,9 @@ body {
     color: var(--texto-escuro);
 }
 
-/* Personalizando cores específicas nos contadores */
 .cards-resumo .card-mini:nth-child(2) span { color: var(--categoria-fem); }
 .cards-resumo .card-mini:nth-child(3) span { color: var(--categoria-inf); }
 
-/* ==========================================
-   FORMULÁRIO DE CADASTRO
-   ========================================== */
 .secao-cadastro {
     background-color: var(--bg-card);
     padding: 32px;
@@ -256,9 +237,6 @@ body {
     box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
 }
 
-/* ==========================================
-   LISTAGEM / TABELA DE PRODUTOS
-   ========================================== */
 .secao-tabela {
     background-color: var(--bg-card);
     border-radius: 12px;
@@ -311,7 +289,6 @@ tr:last-child td {
     border: 1px solid var(--border-color);
 }
 
-/* Tags de Categorias */
 .tag-categoria {
     display: inline-block;
     padding: 4px 12px;
@@ -331,7 +308,6 @@ tr:last-child td {
     color: var(--categoria-inf);
 }
 
-/* Botões de Ação */
 .acoes {
     display: flex;
     gap: 8px;
@@ -360,9 +336,6 @@ tr:last-child td {
     border-color: #ef4444;
 }
 
-/* ==========================================
-   RESPONSIVIDADE (MEDIA QUERIES)
-   ========================================== */
 @media (max-width: 900px) {
     .admin-container {
         grid-template-columns: 1fr;
@@ -381,7 +354,7 @@ tr:last-child td {
     }
     
     .sidebar-menu {
-        display: none; /* Em telas menores, pode-se criar um menu hambúrguer se necessário */
+        display: none;
     }
     
     .conteudo-principal {
