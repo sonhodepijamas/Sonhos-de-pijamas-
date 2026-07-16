@@ -1,5 +1,5 @@
 /* ==========================================
-   CONFIGURAÇÕES GERAIS E CORES (Sonho de Pijamas)
+   CONFIGURAÇÕES GERAIS E RESETS
    ========================================== */
 * {
     margin: 0;
@@ -8,38 +8,59 @@
     font-family: 'Inter', sans-serif;
 }
 
-body {
-    background-color: #f4f8fc;
-    color: #101b37;
+:root {
+    --bg-fundo: #f8f9fc;
+    --sidebar-bg: #1e1b4b; /* Azul escuro/roxo profundo aconchegante */
+    --primary: #6366f1; /* Indigo vibrante */
+    --primary-hover: #4f46e5;
+    --texto-escuro: #1e293b;
+    --texto-claro: #f8fafc;
+    --texto-mutado: #64748b;
+    --border-color: #e2e8f0;
+    --bg-card: #ffffff;
+    
+    /* Categorias */
+    --categoria-fem: #ec4899; /* Rosa */
+    --categoria-inf: #06b6d4; /* Azul turquesa */
 }
 
+body {
+    background-color: var(--bg-fundo);
+    color: var(--texto-escuro);
+    line-height: 1.5;
+}
+
+/* ==========================================
+   LAYOUT PRINCIPAL (GRID)
+   ========================================== */
 .admin-container {
-    display: flex;
+    display: grid;
+    grid-template-columns: 260px 1fr;
     min-height: 100vh;
 }
 
 /* ==========================================
-   SIDEBAR (BARRA LATERAL)
+   SIDEBAR (MENU LATERAL)
    ========================================== */
 .sidebar {
-    width: 260px;
-    background-color: #101b37;
-    color: white;
+    background-color: var(--sidebar-bg);
+    color: var(--texto-claro);
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    padding: 30px 20px;
-    position: fixed;
+    padding: 24px;
+    position: sticky;
+    top: 0;
     height: 100vh;
 }
 
 .logo-admin {
     font-family: 'Montserrat', sans-serif;
-    font-size: 20px;
     font-weight: 800;
-    color: #dfb86c;
+    font-size: 1.2rem;
+    letter-spacing: -0.5px;
     margin-bottom: 40px;
-    text-align: center;
+    color: #e0e7ff;
 }
 
 .sidebar-menu {
@@ -47,126 +68,151 @@ body {
 }
 
 .sidebar-menu li {
-    margin-bottom: 15px;
+    margin-bottom: 8px;
 }
 
-.sidebar-menu li a {
-    color: rgba(255, 255, 255, 0.8);
+.sidebar-menu a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #94a3b8;
     text-decoration: none;
+    padding: 12px 16px;
+    border-radius: 8px;
     font-weight: 500;
-    display: block;
-    padding: 12px 20px;
-    border-radius: 10px;
-    transition: 0.3s;
+    transition: all 0.2s ease;
 }
 
 .sidebar-menu li.ativo a,
-.sidebar-menu li a:hover {
-    background-color: rgba(255, 255, 255, 0.1);
-    color: #dfb86c;
+.sidebar-menu a:hover {
+    color: var(--texto-claro);
+    background-color: rgba(255, 255, 255, 0.08);
+}
+
+.sidebar-menu li.ativo a {
+    background-color: var(--primary);
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
 }
 
 .btn-sair {
-    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
     text-decoration: none;
-    font-weight: 600;
-    padding: 12px 20px;
-    border-radius: 10px;
+    color: #94a3b8;
     background-color: rgba(255, 255, 255, 0.05);
-    text-align: center;
-    transition: 0.3s;
+    padding: 12px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: all 0.2s;
 }
 
 .btn-sair:hover {
-    background-color: #dfb86c;
-    color: #101b37;
+    background-color: #ef4444;
+    color: white;
 }
 
 /* ==========================================
-   CONTEÚDO PRINCIPAL (PAINEL)
+   CONTEÚDO PRINCIPAL
    ========================================== */
 .conteudo-principal {
-    margin-left: 260px;
-    flex: 1;
-    padding: 40px 50px;
+    padding: 40px;
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
 }
 
 .header-admin {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 40px;
+    margin-bottom: 32px;
 }
 
 .header-admin h1 {
     font-family: 'Montserrat', sans-serif;
     font-weight: 700;
-    font-size: 28px;
+    font-size: 1.8rem;
+    color: var(--texto-escuro);
 }
 
-/* ==========================================
-   BOTÕES E COMPONENTES
-   ========================================== */
 .btn-primary {
-    background-color: #101b37;
+    background-color: var(--primary);
     color: white;
     border: none;
     padding: 12px 24px;
-    border-radius: 30px;
-    font-family: 'Montserrat', sans-serif;
-    font-weight: 700;
+    border-radius: 8px;
+    font-weight: 600;
     cursor: pointer;
-    transition: 0.3s;
+    font-family: 'Inter', sans-serif;
+    transition: all 0.2s;
+    box-shadow: 0 4px 10px rgba(99, 102, 241, 0.2);
 }
 
 .btn-primary:hover {
-    background-color: #dfb86c;
-    color: #101b37;
+    background-color: var(--primary-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 14px rgba(99, 102, 241, 0.3);
 }
 
-/* CONTADORES (MINI CARDS) */
+/* ==========================================
+   CARDS DE ESTATÍSTICA (RESUMO)
+   ========================================== */
 .cards-resumo {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 20px;
     margin-bottom: 40px;
 }
 
 .card-mini {
-    background: white;
-    padding: 20px;
-    border-radius: 15px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
-    border: 1px solid rgba(16, 27, 55, 0.05);
+    background-color: var(--bg-card);
+    padding: 24px;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+    border: 1px solid var(--border-color);
 }
 
 .card-mini p {
-    font-size: 14px;
-    opacity: 0.7;
-    margin-bottom: 5px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--texto-mutado);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
 }
 
 .card-mini span {
-    font-size: 28px;
-    font-weight: 700;
-    color: #101b37;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--texto-escuro);
 }
+
+/* Personalizando cores específicas nos contadores */
+.cards-resumo .card-mini:nth-child(2) span { color: var(--categoria-fem); }
+.cards-resumo .card-mini:nth-child(3) span { color: var(--categoria-inf); }
 
 /* ==========================================
    FORMULÁRIO DE CADASTRO
    ========================================== */
 .secao-cadastro {
-    background: white;
-    padding: 30px;
-    border-radius: 20px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
+    background-color: var(--bg-card);
+    padding: 32px;
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
     margin-bottom: 40px;
 }
 
 .secao-cadastro h2 {
     font-family: 'Montserrat', sans-serif;
-    font-size: 20px;
-    margin-bottom: 20px;
+    font-weight: 700;
+    font-size: 1.3rem;
+    margin-bottom: 24px;
+    color: var(--texto-escuro);
 }
 
 .form-grid {
@@ -178,45 +224,51 @@ body {
 .form-grupo {
     display: flex;
     flex-direction: column;
+    gap: 8px;
 }
 
 .form-grupo.total {
     grid-column: span 2;
+    margin-top: 8px;
 }
 
 .form-grupo label {
-    font-size: 14px;
-    font-weight: 500;
-    margin-bottom: 8px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--texto-escuro);
 }
 
 .form-grupo input,
 .form-grupo select {
-    padding: 12px 18px;
+    padding: 12px;
+    border: 1px solid var(--border-color);
     border-radius: 8px;
-    border: 1px solid rgba(16, 27, 55, 0.15);
-    background-color: #fcfdff;
+    font-size: 0.95rem;
     outline: none;
-    font-size: 15px;
-    transition: 0.3s;
+    transition: all 0.2s;
+    background-color: #fafafa;
 }
 
 .form-grupo input:focus,
 .form-grupo select:focus {
-    border-color: #dfb86c;
+    border-color: var(--primary);
+    background-color: white;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
 }
 
 /* ==========================================
-   TABELA DE PRODUTOS E BOTÕES DE AÇÃO
+   LISTAGEM / TABELA DE PRODUTOS
    ========================================== */
 .secao-tabela {
-    background: white;
-    padding: 30px;
-    border-radius: 20px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
+    background-color: var(--bg-card);
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
 }
 
 .tabela-wrapper {
+    width: 100%;
     overflow-x: auto;
 }
 
@@ -226,95 +278,121 @@ table {
     text-align: left;
 }
 
-th, td {
-    padding: 16px;
-    border-bottom: 1px solid rgba(16, 27, 55, 0.05);
-}
-
 th {
-    font-family: 'Montserrat', sans-serif;
+    background-color: #f1f5f9;
+    color: var(--texto-mutado);
+    font-size: 0.8rem;
     font-weight: 700;
-    font-size: 14px;
-    opacity: 0.8;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 16px 24px;
+    border-bottom: 1px solid var(--border-color);
 }
 
 td {
-    font-size: 15px;
+    padding: 16px 24px;
+    border-bottom: 1px solid var(--border-color);
+    color: var(--texto-escuro);
+    font-size: 0.95rem;
     vertical-align: middle;
 }
 
-.img-tabela {
-    width: 50px;
-    height: 50px;
-    object-fit: cover;
-    border-radius: 10px;
+tr:last-child td {
+    border-bottom: none;
 }
 
+/* Imagem da Tabela */
+.img-tabela {
+    width: 48px;
+    height: 48px;
+    object-fit: cover;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    border: 1px solid var(--border-color);
+}
+
+/* Tags de Categorias */
 .tag-categoria {
     display: inline-block;
-    padding: 6px 12px;
+    padding: 4px 12px;
     border-radius: 20px;
-    font-size: 12px;
+    font-size: 0.75rem;
     font-weight: 600;
     text-transform: uppercase;
 }
 
 .tag-categoria.feminino {
-    background-color: #ffe6eb;
-    color: #ff4d6d;
+    background-color: #fce7f3;
+    color: var(--categoria-fem);
 }
 
 .tag-categoria.infantil {
-    background-color: #e6f0ff;
-    color: #0077ff;
+    background-color: #ecfeff;
+    color: var(--categoria-inf);
 }
 
-/* --- CORREÇÃO DA OPÇÃO EXCLUIR --- */
+/* Botões de Ação */
 .acoes {
-    text-align: left;
+    display: flex;
+    gap: 8px;
+}
+
+.btn-acao {
+    padding: 8px 14px;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    background: transparent;
 }
 
 .btn-acao.excluir {
-    background-color: #ffe5e5;
-    color: #cc0000;
-    border: 1px solid #ffb3b3;
-    padding: 8px 16px;
-    border-radius: 8px;
-    font-size: 13px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: 0.3s;
+    color: #ef4444;
+    border-color: #fee2e2;
+    background-color: #fef2f2;
 }
 
 .btn-acao.excluir:hover {
-    background-color: #cc0000;
+    background-color: #ef4444;
     color: white;
-    border-color: #cc0000;
+    border-color: #ef4444;
 }
 
-/* Responsividade Básica */
-@media (max-width: 992px) {
+/* ==========================================
+   RESPONSIVIDADE (MEDIA QUERIES)
+   ========================================== */
+@media (max-width: 900px) {
+    .admin-container {
+        grid-template-columns: 1fr;
+    }
+    
     .sidebar {
-        width: 80px;
-        padding: 20px 10px;
+        height: auto;
+        position: relative;
+        flex-direction: row;
+        align-items: center;
+        padding: 16px 24px;
     }
+    
     .logo-admin {
-        font-size: 12px;
+        margin-bottom: 0;
     }
-    .sidebar-menu li a span {
-        display: none;
+    
+    .sidebar-menu {
+        display: none; /* Em telas menores, pode-se criar um menu hambúrguer se necessário */
     }
+    
     .conteudo-principal {
-        margin-left: 80px;
         padding: 20px;
     }
+    
     .form-grid {
         grid-template-columns: 1fr;
     }
+    
     .form-grupo.total {
         grid-column: span 1;
-    }
-    .cards-resumo {
-        grid-template-columns: 1fr;
     }
 }
