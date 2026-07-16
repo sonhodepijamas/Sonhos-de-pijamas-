@@ -1,4 +1,3 @@
-
 * {
     margin: 0;
     padding: 0;
@@ -8,17 +7,16 @@
 
 :root {
     --bg-fundo: #f8f9fc;
-    --sidebar-bg: #1e1b4b;
-    --primary: #6366f1; 
-    --primary-hover: #4f46e5;
+    --sidebar-bg: #1e1b4b; 
+    --primary: #6366f1;
     --texto-escuro: #1e293b;
     --texto-claro: #f8fafc;
     --texto-mutado: #64748b;
     --border-color: #e2e8f0;
     --bg-card: #ffffff;
     
-    --categoria-fem: #ec4899; 
-    --categoria-inf: #06b6d4; 
+    --categoria-fem: #ec4899;
+    --categoria-inf: #06b6d4;
 }
 
 body {
@@ -145,6 +143,7 @@ body {
     box-shadow: 0 6px 14px rgba(99, 102, 241, 0.3);
 }
 
+
 .cards-resumo {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -257,6 +256,7 @@ table {
 }
 
 th {
+
     background-color: #f1f5f9;
     color: var(--texto-mutado);
     font-size: 0.8rem;
@@ -353,7 +353,7 @@ tr:last-child td {
     }
     
     .sidebar-menu {
-        display: none;
+        display: none; 
     }
     
     .conteudo-principal {
