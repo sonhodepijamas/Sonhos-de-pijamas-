@@ -7,512 +7,104 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Script do Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <style>
-        /* RESET TOTAL */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box !important;
-        }
+        /* RESET & BASE */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Inter', sans-serif; background: #fcfdff; color: #101b37; padding-bottom: 60px; }
 
-        body {
-            font-family: 'Inter', sans-serif;
-            background: #fcfdff !important; 
-            color: #101b37 !important; 
-            display: block !important;
-            visibility: visible !important;
-            opacity: 1 !important;
-            padding-bottom: 100px;
-        }
-
-        #painel-erro {
-            display: block;
-            background: #fff3cd;
-            color: #856404;
-            padding: 15px;
-            text-align: center;
-            font-weight: bold;
-            border-bottom: 3px solid #ffeeba;
-            font-size: 14px;
-            z-index: 9999;
-            position: relative;
-        }
-
+        /* HEADER & NAVEGAÇÃO */
         header {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            height: 80px;
-            background: rgba(252, 253, 255, 0.9) !important;
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 8%;
-            box-shadow: 0 4px 30px rgba(16, 27, 55, 0.03);
-            z-index: 999;
-            border-bottom: 1px solid rgba(16, 27, 55, 0.05);
+            position: fixed; top: 0; left: 0; width: 100%; height: 80px;
+            background: rgba(252, 253, 255, 0.85); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            display: flex; justify-content: space-between; align-items: center; padding: 0 5%;
+            box-shadow: 0 4px 30px rgba(16, 27, 55, 0.02); z-index: 999; border-bottom: 1px solid rgba(16, 27, 55, 0.05);
         }
+        .logo { font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 22px; color: #101b37; }
+        nav { display: flex; gap: 25px; }
+        nav a { text-decoration: none; color: #101b37; font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px; opacity: 0.7; transition: .3s; }
+        nav a:hover { color: #dfb86c; opacity: 1; }
 
-        .logo {
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 700;
-            font-size: 24px;
-            color: #101b37;
-        }
+        /* HERO SECTION */
+        .hero { min-height: 90vh; display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: 40px; padding: 120px 5% 60px; background: linear-gradient(135deg, #101b37 0%, #1a2a52 100%); color: white; }
+        .hero-conteudo h1 { font-size: 56px; line-height: 1.15; font-family: 'Montserrat', sans-serif; font-weight: 800; margin-bottom: 20px; }
+        .hero-conteudo p { font-size: 18px; line-height: 1.6; font-weight: 300; opacity: .85; max-width: 500px; margin-bottom: 35px; }
+        .botao { display: inline-block; padding: 16px 36px; background: #dfb86c; color: #101b37; border-radius: 50px; text-decoration: none; font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px; box-shadow: 0 8px 25px rgba(223, 184, 108, 0.25); transition: transform 0.3s, background 0.3s; }
+        .botao:hover { background: #f4ce84; transform: translateY(-3px); }
+        .hero-imagem img { width: 100%; max-height: 65vh; object-fit: cover; border-radius: 24px; box-shadow: 0 20px 40px rgba(0,0,0,0.2); }
 
-        nav {
-            display: flex;
-            gap: 35px;
-        }
+        /* ELEMENTOS GERAIS DE SEÇÃO */
+        .container { width: 90%; max-width: 1200px; margin: auto; padding: 80px 0 40px; }
+        .titulo { font-size: 36px; margin-bottom: 40px; font-family: 'Montserrat', sans-serif; font-weight: 700; position: relative; }
+        .titulo::after { content: ''; position: absolute; left: 0; bottom: -8px; width: 40px; height: 4px; background: #dfb86c; border-radius: 2px; }
 
-        nav a {
-            text-decoration: none;
-            color: #101b37;
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 500;
-            font-size: 14px;
-            text-transform: uppercase;
-            opacity: 0.8;
-            transition: .3s;
-        }
+        /* BARRA DE FILTROS E BUSCA */
+        .busca-container { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; gap: 20px; flex-wrap: wrap; }
+        .campo-busca { padding: 14px 24px; border-radius: 30px; border: 1px solid rgba(16, 27, 55, 0.1); background: #f4f8fc; width: 100%; max-width: 360px; font-size: 15px; outline: none; font-family: inherit; transition: border 0.3s; }
+        .campo-busca:focus { border-color: #dfb86c; }
+        .filtros { display: flex; gap: 12px; flex-wrap: wrap; }
+        .filtro { padding: 12px 24px; background: #f4f8fc; border-radius: 30px; cursor: pointer; font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: 13px; color: #101b37; transition: .3s; border: 1px solid transparent; }
+        .filtro.ativo, .filtro:hover { background: #dfb86c; border-color: #dfb86c; }
 
-        nav a:hover {
-            color: #dfb86c;
-            opacity: 1;
-        }
+        /* CATALOGO GRID */
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 30px; }
+        .card { background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 20px rgba(16, 27, 55, 0.02); border: 1px solid rgba(16, 27, 55, 0.05); display: flex; flex-direction: column; transition: transform .3s, box-shadow .3s; }
+        .card.escondido { display: none !important; }
+        .card:hover { transform: translateY(-5px); box-shadow: 0 12px 30px rgba(16, 27, 55, 0.06); }
+        .card img { width: 100%; height: 240px; object-fit: cover; display: block; }
+        .info { padding: 20px; display: flex; flex-direction: column; flex-grow: 1; justify-content: space-between; gap: 12px; }
+        .info h3 { font-size: 15px; font-family: 'Montserrat', sans-serif; font-weight: 600; color: #101b37; line-height: 1.4; }
+        .preco { font-size: 18px; font-weight: 700; font-family: 'Montserrat', sans-serif; color: #101b37; }
+        .add-bag { width: 100%; background: #101b37; color: white; padding: 12px; border-radius: 30px; font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; border: none; cursor: pointer; transition: .3s; }
+        .add-bag:hover { background: #dfb86c; color: #101b37; }
 
-        .hero {
-            height: 100vh;
-            display: grid;
-            grid-template-columns: 1.1fr 0.9fr;
-            align-items: center;
-            padding: 0 8%;
-            background: linear-gradient(135deg, #101b37 0%, #1a2a52 100%); 
-            color: white;
-            overflow: hidden;
-        }
+        /* SEÇÃO CONTATO */
+        .contato-wrapper { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 30px; }
+        .contato-info { background: white; padding: 40px; border-radius: 24px; box-shadow: 0 4px 20px rgba(16, 27, 55, 0.02); border: 1px solid rgba(16, 27, 55, 0.04); }
+        .contato-info h3 { font-family: 'Montserrat', sans-serif; font-size: 22px; font-weight: 700; margin-bottom: 12px; color: #101b37; }
+        .contato-info p { font-size: 15px; line-height: 1.6; color: #50586c; margin-bottom: 30px; }
+        .contato-links { display: flex; flex-direction: column; gap: 16px; }
+        .contato-item { display: flex; align-items: center; gap: 16px; background: #f4f8fc; padding: 16px 20px; border-radius: 16px; transition: transform 0.3s; }
+        .contato-item:hover { transform: translateX(4px); }
+        .contato-item .icon { font-size: 20px; background: #dfb86c; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; border-radius: 12px; color: #101b37; flex-shrink: 0; }
+        .contato-texto strong { display: block; font-family: 'Montserrat', sans-serif; font-size: 13px; text-transform: uppercase; color: #101b37; margin-bottom: 2px; }
+        .contato-texto a, .contato-texto span { text-decoration: none; color: #101b37; font-weight: 600; font-size: 15px; }
+        .contato-texto a:hover { color: #dfb86c; }
+        .contato-lateral { background: #101b37; color: white; padding: 40px; border-radius: 24px; display: flex; flex-direction: column; justify-content: space-between; }
+        .contato-lateral h3 { font-family: 'Montserrat', sans-serif; font-size: 20px; font-weight: 700; color: #dfb86c; margin-bottom: 20px; }
+        .horarios li { font-size: 14px; margin-bottom: 14px; display: flex; justify-content: space-between; border-bottom: 1px solid rgba(255, 255, 255, 0.08); padding-bottom: 8px; }
+        .horarios li span { font-weight: 600; }
+        .mensagem-carinho { font-family: 'Montserrat', sans-serif; font-size: 14px; font-style: italic; line-height: 1.6; color: rgba(255, 255, 255, 0.85); border-left: 3px solid #dfb86c; padding-left: 15px; margin-top: 30px; }
 
-        .hero h1 {
-            font-size: 64px;
-            line-height: 1.15;
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 800;
-            margin-bottom: 24px;
-        }
+        /* FLOATING SACOLA BAR */
+        .sacola-bar { position: fixed; bottom: -120px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 580px; background: #101b37; color: white; border-radius: 30px; padding: 16px 28px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 10px 40px rgba(0,0,0,0.3); z-index: 1000; transition: bottom .4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .sacola-bar.active { bottom: 20px; }
+        .sacola-info h4 { font-family: 'Montserrat', sans-serif; font-size: 15px; font-weight: 600; }
+        .sacola-info p { font-size: 18px; font-weight: 700; color: #dfb86c; margin: 2px 0; }
+        .limpar-sacola { background: transparent; border: none; color: white; text-decoration: underline; cursor: pointer; font-size: 12px; opacity: 0.6; }
+        .btn-finalizar { background: #dfb86c; color: #101b37; border: none; padding: 14px 24px; border-radius: 30px; font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 13px; cursor: pointer; transition: background 0.3s; }
+        .btn-finalizar:hover { background: #f4ce84; }
 
-        .hero p {
-            font-size: 18px;
-            line-height: 1.7;
-            font-weight: 300;
-            opacity: .85;
-            max-width: 480px;
-            margin-bottom: 40px;
-        }
+        /* FOOTER */
+        footer { background: #101b37; padding: 40px 20px; text-align: center; color: white; margin-top: 60px; }
+        footer h2 { font-family: 'Montserrat', sans-serif; font-size: 20px; margin-bottom: 8px; }
+        footer p { font-size: 13px; opacity: 0.6; }
 
-        .botao {
-            display: inline-block;
-            padding: 18px 38px;
-            background: #dfb86c; 
-            color: #101b37;
-            border-radius: 60px;
-            text-decoration: none;
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 700;
-            font-size: 15px;
-            text-transform: uppercase;
-            box-shadow: 0 8px 25px rgba(223, 184, 108, 0.25);
-            transition: .4s;
-        }
-
-        .botao:hover {
-            background: #f4ce84;
-            transform: translateY(-5px);
-        }
-
-        .hero img {
-            width: 100%;
-            max-height: 70vh;
-            object-fit: cover;
-            border-radius: 40px;
-        }
-
-        .container {
-            width: 90%;
-            max-width: 1300px;
-            margin: auto;
-        }
-
-        section {
-            padding: 100px 0;
-        }
-
-        .titulo {
-            font-size: 42px;
-            margin-bottom: 45px;
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 700;
-            position: relative;
-        }
-
-        .titulo::after {
-            content: '';
-            position: absolute;
-            left: 0;
-            bottom: -8px;
-            width: 40px;
-            height: 4px;
-            background: #dfb86c;
-            border-radius: 2px;
-        }
-
-        .busca {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 50px;
-            gap: 20px;
-            flex-wrap: wrap;
-        }
-
-        input {
-            padding: 18px 28px;
-            border-radius: 50px;
-            border: 1px solid rgba(16, 27, 55, 0.1);
-            background: #f4f8fc;
-            width: 380px;
-            font-size: 15px;
-            outline: none;
-        }
-
-        .filtros {
-            display: flex;
-            gap: 15px;
-            flex-wrap: wrap;
-        }
-
-        .filtro {
-            padding: 14px 28px;
-            background: #f4f8fc;
-            border-radius: 30px;
-            cursor: pointer;
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 600;
-            font-size: 14px;
-            color: #101b37;
-            transition: .3s;
-        }
-
-        .filtro.ativo, .filtro:hover {
-            background: #dfb86c;
-        }
-
-        /* GRID CATALOGO */
-        .grid {
-            display: grid !important;
-            grid-template-columns: repeat(auto-fill, minmax(180px, 220px)) !important;
-            gap: 25px !important;
-            justify-content: center !important;
-        }
-
-        .card {
-            background: white !important;
-            border-radius: 20px !important;
-            overflow: hidden !important;
-            box-shadow: 0 8px 30px rgba(16, 27, 55, 0.04) !important;
-            border: 1px solid rgba(16, 27, 55, 0.02) !important;
-            display: flex !important;
-            flex-direction: column !important;
-            width: 100% !important;
-            max-width: 220px !important;
-            transition: transform .4s, box-shadow .4s;
-        }
-
-        /* CLASSE QUE ESCONDE OS PRODUTOS DE FORMA INFALÍVEL */
-        .card.escondido {
-            display: none !important;
-        }
-
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 40px rgba(16, 27, 55, 0.08) !important;
-        }
-
-        .card img {
-            width: 100% !important;
-            height: 210px !important;
-            object-fit: cover !important;
-            display: block !important;
-        }
-
-        .info {
-            padding: 15px !important;
-            display: flex !important;
-            flex-direction: column !important;
-            flex-grow: 1 !important;
-            justify-content: space-between !important;
-        }
-
-        .info h3 {
-            margin-bottom: 8px;
-            font-size: 14px !important;
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 600;
-            color: #101b37;
-            line-height: 1.3;
-            min-height: 36px;
-        }
-
-        .preco {
-            font-size: 18px !important;
-            font-weight: 700;
-            font-family: 'Montserrat', sans-serif;
-            margin: 8px 0 !important;
-            color: #101b37;
-        }
-
-        .add-bag {
-            display: block;
-            width: 100%;
-            background: #101b37;
-            color: white;
-            padding: 10px !important;
-            border-radius: 50px;
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 700;
-            font-size: 11px !important;
-            text-transform: uppercase;
-            border: none;
-            cursor: pointer;
-            transition: .3s;
-        }
-
-        .add-bag:hover {
-            background: #dfb86c;
-            color: #101b37;
-        }
-
-        /* CONTATO */
-        .contato-wrapper {
-            display: grid;
-            grid-template-columns: 1.2fr 0.8fr;
-            gap: 40px;
-            margin-top: 20px;
-        }
-
-        .contato-info {
-            background: white;
-            padding: 40px;
-            border-radius: 30px;
-            box-shadow: 0 10px 40px rgba(16, 27, 55, 0.03);
-            border: 1px solid rgba(16, 27, 55, 0.02);
-        }
-
-        .contato-info h3 {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 24px;
-            font-weight: 700;
-            margin-bottom: 15px;
-            color: #101b37;
-        }
-
-        .contato-info p {
-            font-size: 15px;
-            line-height: 1.6;
-            color: #50586c;
-            margin-bottom: 30px;
-        }
-
-        .contato-links {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        .contato-item {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            background: #f4f8fc;
-            padding: 20px;
-            border-radius: 20px;
-            transition: .3s;
-        }
-
-        .contato-item:hover {
-            transform: translateX(5px);
-            background: #eef4fb;
-        }
-
-        .contato-item .icon {
-            font-size: 24px;
-            background: #dfb86c;
-            width: 50px;
-            height: 50px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 15px;
-            color: #101b37;
-        }
-
-        .contato-texto strong {
-            display: block;
-            font-family: 'Montserrat', sans-serif;
-            font-size: 14px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            color: #101b37;
-            margin-bottom: 2px;
-        }
-
-        .contato-texto a {
-            text-decoration: none;
-            color: #101b37;
-            font-weight: 600;
-            font-size: 16px;
-            transition: .2s;
-        }
-
-        .contato-texto a:hover {
-            color: #dfb86c;
-        }
-
-        .contato-texto span {
-            color: #50586c;
-            font-size: 15px;
-        }
-
-        .contato-lateral {
-            background: #101b37;
-            color: white;
-            padding: 40px;
-            border-radius: 30px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            box-shadow: 0 10px 40px rgba(16, 27, 55, 0.1);
-        }
-
-        .contato-lateral h3 {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 20px;
-            font-weight: 700;
-            color: #dfb86c;
-            margin-bottom: 15px;
-        }
-
-        .horarios {
-            list-style: none;
-            margin-top: 15px;
-        }
-
-        .horarios li {
-            font-size: 15px;
-            margin-bottom: 12px;
-            display: flex;
-            justify-content: space-between;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            padding-bottom: 8px;
-            opacity: 0.9;
-        }
-
-        .horarios li span {
-            font-weight: 600;
-        }
-
-        .mensagem-carinho {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 15px;
-            font-style: italic;
-            line-height: 1.6;
-            color: rgba(255, 255, 255, 0.85);
-            border-left: 3px solid #dfb86c;
-            padding-left: 15px;
-            margin-top: 30px;
-        }
-
-        /* SACOLA */
-        .sacola-bar {
-            position: fixed;
-            bottom: -100px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 90%;
-            max-width: 600px;
-            background: #101b37;
-            color: white;
-            border-radius: 40px;
-            padding: 15px 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.35);
-            z-index: 1000;
-            transition: .5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        .sacola-bar.active {
-            bottom: 25px;
-        }
-
-        .btn-finalizar {
-            background: #dfb86c;
-            color: #101b37;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 30px;
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 700;
-            cursor: pointer;
-        }
-
-        .limpar-sacola {
-            background: transparent;
-            border: none;
-            color: white;
-            text-decoration: underline;
-            cursor: pointer;
-            font-size: 12px;
-            opacity: 0.6;
-        }
-
-        footer {
-            background: #101b37;
-            padding: 60px 20px;
-            text-align: center;
-            color: white;
-            margin-top: 80px;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        footer h2 {
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 700;
-            font-size: 22px;
-            margin-bottom: 10px;
-        }
-
-        footer p {
-            font-size: 14px;
-            opacity: 0.6;
-        }
-
-        @media(max-width: 900px) {
-            .hero { grid-template-columns: 1fr; text-align: center; height: auto; padding-top: 140px; padding-bottom: 60px; }
-            .hero h1 { font-size: 46px; }
-            nav { display: none; }
-            input { width: 100%; }
-            .sacola-bar { flex-direction: column; padding: 20px; gap: 15px; }
-            .grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)) !important; gap: 15px !important; }
-            .card { max-width: 100% !important; }
-            .card img { height: 160px !important; }
-            .contato-wrapper { grid-template-columns: 1fr; gap: 30px; }
-            .contato-info { padding: 25px; }
-            .contato-lateral { padding: 30px; }
+        /* RESPONSIVIDADE */
+        @media(max-width: 868px) {
+            header { padding: 0 20px; }
+            .hero { grid-template-columns: 1fr; text-align: center; padding-top: 120px; gap: 30px; }
+            .hero-conteudo h1 { font-size: 38px; }
+            .hero-conteudo p { margin: 0 auto 30px; }
+            .busca-container { flex-direction: column; align-items: stretch; }
+            .campo-busca { max-width: 100%; }
+            .contato-wrapper { grid-template-columns: 1fr; }
+            .sacola-bar { flex-direction: column; text-align: center; gap: 15px; border-radius: 20px; padding: 20px; }
         }
     </style>
 </head>
@@ -527,21 +119,21 @@
     </header>
 
     <section class="hero">
-        <div>
+        <div class="hero-conteudo">
             <h1>Durma melhor.<br>Vista conforto.</h1>
             <p>Pijamas confortáveis para todas as idades. Confortáveis, delicados e feitos para noites tranquilas.</p>
             <a class="botao" href="#catalogo">Ver Catálogo</a>
         </div>
-        <div>
-            <img src="foto 01.jpeg" alt="Pijama">
+        <div class="hero-imagem">
+            <img src="foto 01.jpeg" alt="Pijama Confortável" onerror="this.src='https://via.placeholder.com/500x500?text=Sonho+de+Pijamas'">
         </div>
     </section>
 
     <section class="container" id="catalogo">
         <h2 class="titulo">Catálogo</h2>
         
-        <div class="busca">
-            <input type="text" id="campo-busca" placeholder="Pesquisar pijamas..." onkeyup="filtrarPijamas()">
+        <div class="busca-container">
+            <input type="text" id="campo-busca" class="campo-busca" placeholder="Pesquisar pijamas..." onkeyup="filtrarProdutosLocalmente()">
             
             <div class="filtros">
                 <div class="filtro ativo" onclick="filtrarCategoria('todos', this)">Todos</div>
@@ -550,7 +142,10 @@
             </div>
         </div>
 
-        <div class="grid" id="grid-produtos"></div>
+        <!-- Os produtos vão aparecer aqui via Javascript vindo do Supabase -->
+        <div class="grid" id="grid-produtos">
+            <p style="text-align: center; grid-column: 1/-1; opacity: 0.6; padding: 40px 0;">Carregando peças lindas...</p>
+        </div>
     </section>
 
     <section class="container" id="contato">
@@ -574,7 +169,7 @@
                         <div class="icon">📸</div>
                         <div class="contato-texto">
                             <strong>Siga no Instagram</strong>
-                            <a href="https://www.instagram.com/sonhodepijam_?igsh=MXVzcmcxN283OTV3NQ=" target="_blank">@sonhodepijam_</a>
+                            <a href="https://www.instagram.com/sonhodepijam_?igsh=MXVzcxcxN283OTV3NQ==" target="_blank">@sonhodepijam_</a>
                         </div>
                     </div>
 
@@ -582,9 +177,7 @@
                         <div class="icon">📍</div>
                         <div class="contato-texto">
                             <strong>Localização</strong>
-                            <span style="display: block; margin-bottom: 3px;">Endereço: Av. Tenente José Newton</span>
-                            <span style="display: block; margin-bottom: 3px;">Bairro: Messejana</span> 
-                            <span style="display: block;">Cidade: Fortaleza</span> 
+                            <span style="display: block; font-size: 14px; font-weight: 400; color: #50586c;">Av. Tenente José Newton, Messejana - Fortaleza</span>
                         </div>
                     </div>
                 </div>
@@ -594,12 +187,12 @@
                 <div>
                     <h3>Horário de Atendimento</h3>
                     <ul class="horarios">
-    <li>Segunda á Sexta <span>09h às 18h</span></li>
-    <li>Sábado e Domingo<span>Entregas Online</span></li>
-</ul>
-                
+                        <li>Segunda a Sexta <span>09h às 18h</span></li>
+                        <li>Sábado e Domingo <span>Entregas Online</span></li>
+                    </ul>
+                </div>
                 <div class="mensagem-carinho">
-                    "Feito carinho e embalado com cheirinho de sonho. Pronta para ter a sua melhor noite de sono?" 😴💤
+                    "Feito com carinho e embalado com cheirinho de sonho. Pronta para ter a sua melhor noite de sono?" 😴💤
                 </div>
             </div>
         </div>
@@ -609,7 +202,7 @@
         <div class="sacola-info">
             <h4 id="itens-qtd">Sacola: 0 item</h4>
             <p id="total-preco">R$ 0,00</p>
-            <button class="limpar-sacola" onclick="limparCarrinho()">Esvaziar</button>
+            <button class="limpar-sacola" onclick="limparCarrinho()">Esvaziar sacola</button>
         </div>
         <button class="btn-finalizar" onclick="enviarPedidoWhatsApp()">
             🛒 Finalizar via WhatsApp
@@ -622,66 +215,67 @@
     </footer>
 
     <script>
+        const SUPABASE_URL = "https://enzcxrxvllzybdildypc.supabase.co";
+        const SUPABASE_KEY = "sb_publishable_BNCor3Ox8vbZstcZQ4Y-Fw_JVKfsSIa";
         const TELEFONE_WHATSAPP = "5585987425849"; 
-        let carrinho = [];
+        
+         supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-        const pijamasPadrao = [
-            { id: 1, nome: "Baby Alça Hello kitty", preco: 53.00, categoria: "feminino", img: "baby alça (2).jpeg" },
-            { id: 2, nome: "Camisola Mia", preco: 58.00, categoria: "feminino", img: "WhatsApp Image 2026-07-15 at 12.56.06.jpeg" },
-            { id: 3, nome: "Baby Sonho M. Super Poderosas", preco: 64.00, categoria: "infantil", img: "baby alça.jpeg" },
-            { id: 4, nome: "Americano Snoopy", preco: 100.00, categoria: "infantil", img: "babysonho.jpeg.jpeg" }
-        ];
+        var carrinho = [];
+        var filtroCategoriaAtual = 'todos';
 
-        let listaProdutos = [];
+        document.addEventListener("DOMContentLoaded", carregarProdutosDoSupabase);
 
-        function forcarLimpezaEletrica() {
-            localStorage.clear();
-            localStorage.setItem('produtos_catalogo', JSON.stringify(pijamasPadrao));
-            alert("Memória limpa! Página reiniciada.");
-            location.reload();
-        }
-
-        try {
-            const dadosLocais = localStorage.getItem('produtos_catalogo');
-            if (!dadosLocais || dadosLocais === "undefined" || dadosLocais === "null" || dadosLocais === "[]") {
-                localStorage.setItem('produtos_catalogo', JSON.stringify(pijamasPadrao));
-                listaProdutos = pijamasPadrao;
-            } else {
-                listaProdutos = JSON.parse(dadosLocais);
-            }
-        } catch (e) {
-            listaProdutos = pijamasPadrao;
-        }
-
-        let filtroCategoriaAtual = 'todos';
-
-        function renderizarCatalogo() {
+        async function carregarProdutosDoSupabase() {
             const grid = document.getElementById('grid-produtos');
-            if (!grid) return;
             
-            grid.innerHTML = ""; 
+            try {
+                let { data: pijamas, error } = await supabase
+                    .from('Produtos')
+                    .select('*')
+                    .order('id', { ascending: true });
 
-            listaProdutos.forEach(pijama => {
-                let cat = pijama.categoria || pijama.category || 'todos';
-                cat = cat.toLowerCase().trim();
+                if (error) throw error;
 
-                grid.innerHTML += `
-                    <div class="card" data-category="${cat}">
-                        <img src="${pijama.img}" alt="${pijama.nome}" onerror="this.src='https://via.placeholder.com/220x210?text=Imagem'">
+                if (!pijamas || pijamas.length === 0) {
+                    grid.innerHTML = '<p style="text-align: center; grid-column: 1/-1; opacity: 0.6;">Nenhum pijama cadastrado no banco ainda.</p>';
+                    return;
+                }
+
+                grid.innerHTML = '';
+
+                pijamas.forEach(pijama => {
+                    const card = document.createElement('div');
+                    card.className = 'card';
+                    card.setAttribute("data-name", pijama.nome.toLowerCase());
+                    card.setAttribute("data-category", (pijama.categoria || 'geral').toLowerCase());
+
+                    card.innerHTML = `
+                        <img src="${pijama.imagem_url}" alt="${pijama.nome}" onerror="this.src='https://picsum.photos/220/240'">
                         <div class="info">
                             <h3>${pijama.nome}</h3>
-                            <div class="preco">R$ ${Number(pijama.preco).toFixed(2).replace('.', ',')}</div>
+                            <div class="preco">R$ ${pijama.preco.toFixed(2).replace('.', ',')}</div>
                             <button class="add-bag" onclick="adicionarAoCarrinho('${pijama.nome}', ${pijama.preco})">Adicionar à Sacola</button>
                         </div>
-                    </div>
-                `;
-            });
-            
-            aplicarFiltrosCombinados();
+                    `;
+                    grid.appendChild(card);
+                });
+
+            } catch (err) {
+                console.error("Erro ao carregar do Supabase:", err);
+                grid.innerHTML = '<p style="text-align: center; grid-column: 1/-1; color: red;">Não foi possível carregar os produtos. Verifique se a tabela foi criada no SQL Editor.</p>';
+            }
         }
 
         function adicionarAoCarrinho(nome, preco) {
-            const itemExistente = carrinho.find(item => item.nome === nome);
+            var itemExistente = null;
+            for (var i = 0; i < carrinho.length; i++) {
+                if (carrinho[i].nome === nome) {
+                    itemExistente = carrinho[i];
+                    break;
+                }
+            }
+
             if (itemExistente) { 
                 itemExistente.quantidade += 1; 
             } else { 
@@ -691,26 +285,26 @@
         }
 
         function atualizarInterfaceSacola() {
-            const sacola = document.getElementById('sacola');
-            const itensQtd = document.getElementById('itens-qtd');
-            const totalPreco = document.getElementById('total-preco');
+            var sacola = document.getElementById('sacola');
+            var itensQtd = document.getElementById('itens-qtd');
+            var totalPreco = document.getElementById('total-preco');
             
             if (carrinho.length === 0) { 
-                if(sacola) sacola.classList.remove('active'); 
+                sacola.classList.remove('active'); 
                 return; 
             }
             
-            let totalItens = 0; 
-            let valorTotal = 0;
+            var totalItens = 0;
+            var valorTotal = 0;
+            for (var i = 0; i < carrinho.length; i++) {
+                totalItens += carrinho[i].quantidade;
+                valorTotal += (carrinho[i].preco * carrinho[i].quantidade);
+            }
             
-            carrinho.forEach(item => { 
-                totalItens += item.quantidade; 
-                valorTotal += (item.preco * item.quantidade); 
-            });
-            
-            if(itensQtd) itensQtd.innerText = `Sacola: ${totalItens} ${totalItens === 1 ? 'item' : 'itens'}`;
-            if(totalPreco) totalPreco.innerText = `R$ ${valorTotal.toFixed(2).replace('.', ',')}`;
-            if(sacola) sacola.classList.add('active');
+            var textoItem = totalItens === 1 ? 'item' : 'itens';
+            itensQtd.innerText = 'Sacola: ' + totalItens + ' ' + textoItem;
+            totalPreco.innerText = 'R$ ' + valorTotal.toFixed(2).replace('.', ',');
+            sacola.classList.add('active');
         }
 
         function limparCarrinho() { 
@@ -720,31 +314,32 @@
 
         function enviarPedidoWhatsApp() {
             if (carrinho.length === 0) return;
-            let mensagem = "Olá, Sonho de Pijamas! Gostaria de encomendar os seguintes produtos:\n\n";
-            let valorTotal = 0;
             
-            carrinho.forEach(item => {
+            var mensagem = "Olá, Sonho de Pijamas! Gostaria de encomendar os seguintes produtos:\n\n";
+            var valorTotal = 0;
+            
+            for (var i = 0; i < carrinho.length; i++) {
+                var item = carrinho[i];
                 valorTotal += item.preco * item.quantidade;
-                mensagem += `🔹 *${item.quantidade}x* ${item.nome} - R$ ${item.preco.toFixed(2).replace('.', ',')} cada\n`;
-            });
+                mensagem += "🔹 *" + item.quantidade + "x* " + item.nome + " - R$ " + item.preco.toFixed(2).replace('.', ',') + " cada\n";
+            }
             
-            mensagem += `\n*Total do Pedido:* R$ ${valorTotal.toFixed(2).replace('.', ',')}\n\nPode me ajudar a finalizar a compra?`;
-            window.open(`https://wa.me/${TELEFONE_WHATSAPP}?text=${encodeURIComponent(mensagem)}`, '_blank');
+            mensagem += "\n*Total do Pedido:* R$ " + valorTotal.toFixed(2).replace('.', ',') + "\n\nPode me ajudar a finalizar a compra?";
+            window.open("https://wa.me/" + TELEFONE_WHATSAPP + "?text=" + encodeURIComponent(mensagem), '_blank');
         }
 
-        function aplicarFiltrosCombinados() {
-            const buscaInput = document.getElementById('campo-busca');
-            const termoBusca = buscaInput ? buscaInput.value.toLowerCase().trim() : "";
-            const cards = document.querySelectorAll('.card');
+        function filtrarProdutosLocalmente() {
+            var termoBusca = document.getElementById('campo-busca').value.toLowerCase().trim();
+            var cards = document.querySelectorAll('.card');
 
-            cards.forEach(card => {
-                const titulo = card.querySelector('.info h3').innerText.toLowerCase();
-                const categoriaCard = card.getAttribute('data-category') ? card.getAttribute('data-category').toLowerCase().trim() : "";
+            cards.forEach(function(card) {
+                var titulo = card.getAttribute('data-name');
+                var categoriaCard = card.getAttribute('data-category');
 
-                const atendeBusca = titulo.includes(termoBusca);
-                const atendeCategoria = (filtroCategoriaAtual === 'todos' || categoriaCard === filtroCategoriaAtual);
+                var bateBusca = titulo.indexOf(termoBusca) !== -1;
+                var bateCategoria = (filtroCategoriaAtual === 'todos' || categoriaCard === filtroCategoriaAtual);
 
-                if (atendeBusca && atendeCategoria) {
+                if (bateBusca && bateCategoria) {
                     card.classList.remove('escondido');
                 } else {
                     card.classList.add('escondido');
@@ -752,21 +347,15 @@
             });
         }
 
-        function filtrarPijamas() {
-            aplicarFiltrosCombinados();
-        }
-
         function filtrarCategoria(categoria, elementoBotao) {
-            document.querySelectorAll('.filtro').forEach(b => b.classList.remove('ativo'));
-            if(elementoBotao) elementoBotao.classList.add('ativo');
+            document.querySelectorAll('.filtro').forEach(function(b) {
+                b.classList.remove('ativo');
+            });
+            if (elementoBotao) elementoBotao.classList.add('ativo');
             
             filtroCategoriaAtual = categoria.toLowerCase().trim();
-            aplicarFiltrosCombinados();
+            filtrarProdutosLocalmente();
         }
-
-        window.onload = function() {
-            renderizarCatalogo();
-        };
     </script>
 </body>
 </html>
