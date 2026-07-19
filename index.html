@@ -9,16 +9,13 @@
     <link rel="preconnect" href="https://gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-    <!-- Script do Supabase -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <style>
-        /* RESET & BASE */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html { scroll-behavior: smooth; }
         body { font-family: 'Inter', sans-serif; background: #fcfdff; color: #101b37; padding-bottom: 60px; }
 
-        /* HEADER & NAVEGAÇÃO */
         header {
             position: fixed; top: 0; left: 0; width: 100%; height: 80px;
             background: rgba(252, 253, 255, 0.85); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
@@ -30,20 +27,17 @@
         nav a { text-decoration: none; color: #101b37; font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px; opacity: 0.7; transition: .3s; }
         nav a:hover { color: #dfb86c; opacity: 1; }
 
-        /* HERO SECTION */
         .hero { min-height: 90vh; display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: 40px; padding: 120px 5% 60px; background: linear-gradient(135deg, #101b37 0%, #1a2a52 100%); color: white; }
         .hero-conteudo h1 { font-size: 56px; line-height: 1.15; font-family: 'Montserrat', sans-serif; font-weight: 800; margin-bottom: 20px; }
         .hero-conteudo p { font-size: 18px; line-height: 1.6; font-weight: 300; opacity: .85; max-width: 500px; margin-bottom: 35px; }
         .botao { display: inline-block; padding: 16px 36px; background: #dfb86c; color: #101b37; border-radius: 50px; text-decoration: none; font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px; box-shadow: 0 8px 25px rgba(223, 184, 108, 0.25); transition: transform 0.3s, background 0.3s; }
         .botao:hover { background: #f4ce84; transform: translateY(-3px); }
         .hero-imagem img { width: 100%; max-height: 65vh; object-fit: cover; border-radius: 24px; box-shadow: 0 20px 40px rgba(0,0,0,0.2); }
-
-        /* ELEMENTOS GERAIS DE SEÇÃO */
+    
         .container { width: 90%; max-width: 1200px; margin: auto; padding: 80px 0 40px; }
         .titulo { font-size: 36px; margin-bottom: 40px; font-family: 'Montserrat', sans-serif; font-weight: 700; position: relative; }
         .titulo::after { content: ''; position: absolute; left: 0; bottom: -8px; width: 40px; height: 4px; background: #dfb86c; border-radius: 2px; }
 
-        /* BARRA DE FILTROS E BUSCA */
         .busca-container { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; gap: 20px; flex-wrap: wrap; }
         .campo-busca { padding: 14px 24px; border-radius: 30px; border: 1px solid rgba(16, 27, 55, 0.1); background: #f4f8fc; width: 100%; max-width: 360px; font-size: 15px; outline: none; font-family: inherit; transition: border 0.3s; }
         .campo-busca:focus { border-color: #dfb86c; }
@@ -51,7 +45,6 @@
         .filtro { padding: 12px 24px; background: #f4f8fc; border-radius: 30px; cursor: pointer; font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: 13px; color: #101b37; transition: .3s; border: 1px solid transparent; }
         .filtro.ativo, .filtro:hover { background: #dfb86c; border-color: #dfb86c; }
 
-        /* CATALOGO GRID */
         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 30px; }
         .card { background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 20px rgba(16, 27, 55, 0.02); border: 1px solid rgba(16, 27, 55, 0.05); display: flex; flex-direction: column; transition: transform .3s, box-shadow .3s; }
         .card.escondido { display: none !important; }
@@ -63,7 +56,6 @@
         .add-bag { width: 100%; background: #101b37; color: white; padding: 12px; border-radius: 30px; font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; border: none; cursor: pointer; transition: .3s; }
         .add-bag:hover { background: #dfb86c; color: #101b37; }
 
-        /* SEÇÃO CONTATO */
         .contato-wrapper { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 30px; }
         .contato-info { background: white; padding: 40px; border-radius: 24px; box-shadow: 0 4px 20px rgba(16, 27, 55, 0.02); border: 1px solid rgba(16, 27, 55, 0.04); }
         .contato-info h3 { font-family: 'Montserrat', sans-serif; font-size: 22px; font-weight: 700; margin-bottom: 12px; color: #101b37; }
@@ -81,7 +73,6 @@
         .horarios li span { font-weight: 600; }
         .mensagem-carinho { font-family: 'Montserrat', sans-serif; font-size: 14px; font-style: italic; line-height: 1.6; color: rgba(255, 255, 255, 0.85); border-left: 3px solid #dfb86c; padding-left: 15px; margin-top: 30px; }
 
-        /* FLOATING SACOLA BAR */
         .sacola-bar { position: fixed; bottom: -120px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 580px; background: #101b37; color: white; border-radius: 30px; padding: 16px 28px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 10px 40px rgba(0,0,0,0.3); z-index: 1000; transition: bottom .4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
         .sacola-bar.active { bottom: 20px; }
         .sacola-info h4 { font-family: 'Montserrat', sans-serif; font-size: 15px; font-weight: 600; }
@@ -90,12 +81,10 @@
         .btn-finalizar { background: #dfb86c; color: #101b37; border: none; padding: 14px 24px; border-radius: 30px; font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 13px; cursor: pointer; transition: background 0.3s; }
         .btn-finalizar:hover { background: #f4ce84; }
 
-        /* FOOTER */
         footer { background: #101b37; padding: 40px 20px; text-align: center; color: white; margin-top: 60px; }
         footer h2 { font-family: 'Montserrat', sans-serif; font-size: 20px; margin-bottom: 8px; }
         footer p { font-size: 13px; opacity: 0.6; }
 
-        /* RESPONSIVIDADE */
         @media(max-width: 868px) {
             header { padding: 0 20px; }
             .hero { grid-template-columns: 1fr; text-align: center; padding-top: 120px; gap: 30px; }
@@ -142,7 +131,6 @@
             </div>
         </div>
 
-        <!-- Os produtos vão aparecer aqui via Javascript vindo do Supabase -->
         <div class="grid" id="grid-produtos">
             <p style="text-align: center; grid-column: 1/-1; opacity: 0.6; padding: 40px 0;">Carregando peças lindas...</p>
         </div>
@@ -251,7 +239,7 @@
                     card.setAttribute("data-category", (pijama.categoria || 'geral').toLowerCase());
 
                     card.innerHTML = `
-                        <img src="${pijama.imagem_url}" alt="${pijama.nome}" onerror="this.src='https://picsum.photos/220/240'">
+                        <img src="${pijama.imagem}" alt="${pijama.nome}" onerror="this.src='https://picsum.photos/220/240'">
                         <div class="info">
                             <h3>${pijama.nome}</h3>
                             <div class="preco">R$ ${pijama.preco.toFixed(2).replace('.', ',')}</div>
@@ -275,7 +263,6 @@
                     break;
                 }
             }
-
             if (itemExistente) { 
                 itemExistente.quantidade += 1; 
             } else { 

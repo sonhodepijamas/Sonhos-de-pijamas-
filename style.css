@@ -1,567 +1,367 @@
-/* ===========================
-   RESET
-=========================== */
-
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
+/* ==========================================
+   CONFIGURAÇÕES E VARIÁVEIS (MODERNO)
+========================================== */
+:root {
+    --bg-principal: #f8f9fa;
+    --cor-texto: #1e2229;
+    --cor-suave: #6c757d;
+    --primaria-escura: #0d1321;
+    --accent: #e2c291;
+    --accent-claro: #fbf7f0;
+    --branco: #ffffff;
+    --sombra-suave: 0 8px 30px rgba(0, 0, 0, 0.04);
+    --sombra-hover: 0 20px 40px rgba(13, 19, 33, 0.08);
+    --transicao: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-html{
-    scroll-behavior:smooth;
+/* ==========================================
+   RESET & CORREÇÕES
+========================================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-font-smoothing: antialiased;
 }
 
-body{
-    font-family:'Inter',sans-serif;
-    background:#fcfdff;
-    color:#101b37;
-    -webkit-font-smoothing:antialiased;
-    -moz-osx-font-smoothing:grayscale;
-    padding-bottom:100px;
+html {
+    scroll-behavior: smooth;
 }
 
-/* ===========================
-   HEADER
-=========================== */
-
-header{
-    position:fixed;
-    top:0;
-    left:0;
-    width:100%;
-    height:80px;
-    background:rgba(252,253,255,.85);
-    backdrop-filter:blur(20px);
-    -webkit-backdrop-filter:blur(20px);
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    padding:0 8%;
-    border-bottom:1px solid rgba(16,27,55,.05);
-    box-shadow:0 4px 20px rgba(0,0,0,.03);
-    z-index:999;
+body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg-principal);
+    color: var(--cor-texto);
+    overflow-x: hidden;
 }
 
-.logo{
-    font-family:'Montserrat',sans-serif;
-    font-size:24px;
-    font-weight:700;
-    color:#101b37;
-    display:flex;
-    align-items:center;
-    gap:10px;
+.container {
+    width: 92%;
+    max-width: 1400px;
+    margin: auto;
 }
 
-nav{
-    display:flex;
-    gap:35px;
+section {
+    padding: 100px 0;
 }
 
-nav a{
-    text-decoration:none;
-    color:#101b37;
-    font-family:'Montserrat',sans-serif;
-    font-size:14px;
-    font-weight:600;
-    text-transform:uppercase;
-    letter-spacing:.8px;
-    transition:.3s;
+/* ==========================================
+   HEADER (MINIMALISTA & ESTRUTURADO)
+========================================== */
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 90px;
+    background: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 6%;
+    z-index: 999;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+    transition: var(--transicao);
 }
 
-nav a:hover{
-    color:#dfb86c;
+.logo {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    text-transform: lowercase; /* Visual moderno de marca premium */
 }
 
-/* ===========================
-   HERO
-=========================== */
-
-.hero{
-    min-height:100vh;
-    display:grid;
-    grid-template-columns:1.1fr .9fr;
-    align-items:center;
-    padding:0 8%;
-    background:linear-gradient(135deg,#101b37,#1d2d5d);
-    color:#fff;
-    overflow:hidden;
+.logo::after {
+    content: '.';
+    color: var(--accent);
 }
 
-.hero h1{
-    font-family:'Montserrat',sans-serif;
-    font-size:64px;
-    font-weight:800;
-    line-height:1.15;
-    margin-bottom:25px;
+nav {
+    display: flex;
+    gap: 40px;
 }
 
-.hero p{
-    max-width:500px;
-    font-size:18px;
-    line-height:1.8;
-    opacity:.85;
-    margin-bottom:40px;
+nav a {
+    text-decoration: none;
+    color: var(--cor-texto);
+    font-weight: 500;
+    font-size: 15px;
+    transition: var(--transicao);
+    position: relative;
 }
 
-.hero img{
-    width:100%;
-    max-height:700px;
-    object-fit:cover;
-    border-radius:40px;
-    box-shadow:0 25px 50px rgba(0,0,0,.35);
+nav a::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    transform: scaleX(0);
+    height: 1.5px;
+    bottom: -6px;
+    left: 0;
+    background-color: var(--accent);
+    transform-origin: bottom right;
+    transition: transform 0.25s ease-out;
 }
 
-/* ===========================
-   BOTÃO
-=========================== */
-
-.botao{
-    display:inline-block;
-    background:#dfb86c;
-    color:#101b37;
-    text-decoration:none;
-    padding:18px 38px;
-    border-radius:60px;
-    font-family:'Montserrat',sans-serif;
-    font-weight:700;
-    transition:.3s;
-    box-shadow:0 8px 25px rgba(223,184,108,.3);
+nav a:hover::after {
+    transform: scaleX(1);
+    transform-origin: bottom left;
 }
 
-.botao:hover{
-    transform:translateY(-5px);
-    background:#f4ce84;
+nav a:hover {
+    color: var(--cor-texto);
 }
 
-/* ===========================
-   CONTAINER
-=========================== */
-
-.container{
-    width:90%;
-    max-width:1300px;
-    margin:auto;
+/* ==========================================
+   HERO (CONFORTO & SOFISTICAÇÃO)
+========================================== */
+.hero {
+    min-height: 95vh;
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    align-items: center;
+    gap: 80px;
+    padding: 140px 6% 80px;
+    background: var(--accent-claro); /* Fundo claro traz sensação de acordar leve */
+    color: var(--primaria-escura);
 }
 
-section{
-    padding:120px 0;
+.hero h1 {
+    font-size: 68px;
+    line-height: 1.05;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    letter-spacing: -2px;
+    margin-bottom: 24px;
 }
 
-.titulo{
-    font-family:'Montserrat',sans-serif;
-    font-size:42px;
-    font-weight:700;
-    margin-bottom:45px;
-    position:relative;
-    display:inline-block;
+.hero p {
+    font-size: 19px;
+    line-height: 1.7;
+    color: var(--cor-suave);
+    margin-bottom: 40px;
+    max-width: 540px;
 }
 
-.titulo::after{
-    content:"";
-    position:absolute;
-    left:0;
-    bottom:-8px;
-    width:45px;
-    height:4px;
-    background:#dfb86c;
-    border-radius:10px;
-}
-/* ===========================
-   BUSCA
-=========================== */
-
-.busca{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    gap:20px;
-    flex-wrap:wrap;
-    margin-bottom:50px;
+.hero-imagem-wrapper {
+    position: relative;
+    width: 100%;
 }
 
-#campo-busca{
-    width:380px;
-    max-width:100%;
-    padding:18px 25px;
-    border:none;
-    border-radius:50px;
-    background:#f4f8fc;
-    font-size:15px;
-    color:#101b37;
-    outline:none;
-    transition:.3s;
-    border:1px solid rgba(16,27,55,.08);
+.hero img {
+    width: 100%;
+    height: 550px;
+    object-fit: cover;
+    border-radius: 40px 10px 40px 10px; /* Bordas assimétricas super modernas */
+    box-shadow: 0 30px 70px rgba(13, 19, 33, 0.12);
 }
 
-#campo-busca:focus{
-    border-color:#dfb86c;
-    box-shadow:0 0 0 4px rgba(223,184,108,.15);
+.botao {
+    display: inline-block;
+    padding: 18px 42px;
+    background: var(--primaria-escura);
+    color: var(--branco);
+    border-radius: 16px; /* Bordas levemente arredondadas, não mais ovais completas */
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 15px;
+    letter-spacing: 0.5px;
+    transition: var(--transicao);
+    box-shadow: 0 10px 30px rgba(13, 19, 33, 0.15);
 }
 
-/* ===========================
-   FILTROS
-=========================== */
-
-.filtros{
-    display:flex;
-    gap:15px;
-    flex-wrap:wrap;
+.botao:hover {
+    background: var(--accent);
+    color: var(--primaria-escura);
+    transform: translateY(-4px);
+    box-shadow: 0 15px 35px rgba(226, 194, 145, 0.3);
 }
 
-.filtro{
-    background:#f4f8fc;
-    border:1px solid rgba(16,27,55,.08);
-    padding:14px 28px;
-    border-radius:30px;
-    cursor:pointer;
-    font-family:'Montserrat',sans-serif;
-    font-weight:600;
-    transition:.3s;
+/* ==========================================
+   TÍTULOS DE SEÇÃO
+========================================== */
+.titulo {
+    font-size: 38px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    letter-spacing: -1px;
+    margin-bottom: 40px;
+    color: var(--primaria-escura);
+}
+
+/* Removeu-se a linha antiga ::after pesada por um visual mais limpo e espaçado */
+
+/* ==========================================
+   BUSCA E FILTROS (FLUIDOS)
+========================================== */
+.busca {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 24px;
+    margin-bottom: 60px;
+}
+
+#campo-busca {
+    width: 400px;
+    padding: 18px 28px;
+    border-radius: 16px;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    background: var(--branco);
+    font-size: 15px;
+    color: var(--cor-texto);
+    outline: none;
+    transition: var(--transicao);
+    box-shadow: var(--sombra-suave);
+}
+
+#campo-busca:focus {
+    border-color: var(--primaria-escura);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.02);
+}
+
+.filtros {
+    display: flex;
+    gap: 10px;
+}
+
+.filtro {
+    border: 1px solid rgba(0, 0, 0, 0.04);
+    background: var(--branco);
+    padding: 14px 28px;
+    border-radius: 14px;
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 14px;
+    color: var(--cor-suave);
+    transition: var(--transicao);
+    box-shadow: var(--sombra-suave);
 }
 
 .filtro:hover,
-.filtro.ativo{
-    background:#dfb86c;
-    color:#101b37;
-    border-color:#dfb86c;
+.filtro.ativo {
+    background: var(--primaria-escura);
+    color: var(--branco);
+    border-color: var(--primaria-escura);
 }
 
-/* ===========================
-   GRID
-=========================== */
-
-.grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(270px,1fr));
-    gap:35px;
+/* ==========================================
+   GRID DE PRODUTOS
+========================================== */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); /* Aumentado para valorizar fotos */
+    gap: 40px;
 }
 
-/* ===========================
-   CARD
-=========================== */
-
-.card{
-    background:#fff;
-    border-radius:30px;
-    overflow:hidden;
-    transition:.35s;
-    box-shadow:0 12px 40px rgba(16,27,55,.05);
-    border:1px solid rgba(16,27,55,.03);
+/* ==========================================
+   CARD DE PRODUTO (PREMIUM BOUTIQUE)
+========================================== */
+.card {
+    background: var(--branco);
+    border-radius: 24px;
+    overflow: hidden;
+    transition: var(--transicao);
+    box-shadow: var(--sombra-suave);
+    border: 1px solid rgba(0, 0, 0, 0.02);
+    position: relative;
 }
 
-.card:hover{
-    transform:translateY(-10px);
-    box-shadow:0 25px 50px rgba(16,27,55,.12);
+.card:hover {
+    transform: translateY(-10px);
+    box-shadow: var(--sombra-hover);
 }
 
-.card img{
-    width:100%;
-    height:360px;
-    object-fit:cover;
+.card-imagem-container {
+    overflow: hidden;
+    position: relative;
+    background: #f1f1f1;
 }
 
-.info{
-    padding:25px;
+.card img {
+    width: 100%;
+    height: 380px; /* Mais vertical, padrão do mercado de moda atual */
+    object-fit: cover;
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.info h3{
-    font-family:'Montserrat',sans-serif;
-    font-size:19px;
-    font-weight:600;
-    margin-bottom:10px;
-    color:#101b37;
+.card:hover img {
+    transform: scale(1.06);
 }
 
-.preco{
-    font-family:'Montserrat',sans-serif;
-    font-size:24px;
-    font-weight:700;
-    color:#101b37;
-    margin:18px 0;
+.info {
+    padding: 24px;
 }
 
-/* ===========================
-   BOTÃO CARD
-=========================== */
-
-.add-bag{
-    width:100%;
-    border:none;
-    background:#101b37;
-    color:#fff;
-    padding:15px;
-    border-radius:40px;
-    cursor:pointer;
-    font-family:'Montserrat',sans-serif;
-    font-size:14px;
-    font-weight:700;
-    transition:.3s;
+.info h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--cor-texto);
+    margin-bottom: 8px;
+    min-height: auto; 
+    font-family: 'Inter', sans-serif;
+    letter-spacing: -0.2px;
 }
 
-.add-bag:hover{
-    background:#dfb86c;
-    color:#101b37;
+.preco {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--primaria-escura);
+    margin-bottom: 20px;
 }
 
-/* ===========================
-   ANIMAÇÃO DOS CARDS
-=========================== */
-
-.card{
-    animation:fadeUp .5s ease;
+.add-bag {
+    width: 100%;
+    border: 1px solid var(--primaria-escura);
+    background: transparent;
+    color: var(--primaria-escura);
+    padding: 16px;
+    border-radius: 14px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 14px;
+    letter-spacing: 0.3px;
+    transition: var(--transicao);
 }
 
-@keyframes fadeUp{
-
-from{
-    opacity:0;
-    transform:translateY(20px);
+.add-bag:hover {
+    background: var(--primaria-escura);
+    color: var(--branco);
 }
 
-to{
-    opacity:1;
-    transform:translateY(0);
-}
-
-}
-/* ===========================
-   SACOLA FLUTUANTE
-=========================== */
-
-.sacola-bar{
-    position:fixed;
-    left:50%;
-    bottom:-120px;
-    transform:translateX(-50%);
-    width:90%;
-    max-width:650px;
-    background:#101b37;
-    color:#fff;
-    border-radius:35px;
-    padding:18px 28px;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    box-shadow:0 15px 45px rgba(0,0,0,.35);
-    transition:.4s;
-    z-index:9999;
-}
-
-.sacola-bar.active{
-    bottom:25px;
-}
-
-.sacola-info h4{
-    font-family:'Montserrat',sans-serif;
-    font-size:15px;
-    font-weight:500;
-    margin-bottom:4px;
-    opacity:.8;
-}
-
-.sacola-info p{
-    font-family:'Montserrat',sans-serif;
-    font-size:24px;
-    color:#dfb86c;
-    font-weight:700;
-}
-
-.btn-finalizar{
-    background:#dfb86c;
-    color:#101b37;
-    border:none;
-    padding:14px 24px;
-    border-radius:35px;
-    cursor:pointer;
-    font-family:'Montserrat',sans-serif;
-    font-weight:700;
-    transition:.3s;
-}
-
-.btn-finalizar:hover{
-    background:#f7d78c;
-    transform:scale(1.05);
-}
-
-.limpar-sacola{
-    background:none;
-    border:none;
-    color:#fff;
-    font-size:13px;
-    margin-top:5px;
-    cursor:pointer;
-    opacity:.7;
-}
-
-.limpar-sacola:hover{
-    opacity:1;
-}
-
-/* ===========================
-   FOOTER
-=========================== */
-
-footer{
-    background:#101b37;
-    color:#fff;
-    text-align:center;
-    padding:80px 20px;
-    margin-top:120px;
-}
-
-footer h2{
-    font-family:'Montserrat',sans-serif;
-    font-size:30px;
-    margin-bottom:15px;
-}
-
-footer p{
-    opacity:.75;
-    font-size:16px;
-}
-
-/* ===========================
-   SCROLLBAR
-=========================== */
-
-::-webkit-scrollbar{
-    width:8px;
-}
-
-::-webkit-scrollbar-track{
-    background:#edf2f7;
-}
-
-::-webkit-scrollbar-thumb{
-    background:#dfb86c;
-    border-radius:20px;
-}
-
-::-webkit-scrollbar-thumb:hover{
-    background:#cfa655;
-}
-
-/* ===========================
-   RESPONSIVO
-=========================== */
-
-@media(max-width:1000px){
-
-.hero{
-    grid-template-columns:1fr;
-    text-align:center;
-    padding-top:140px;
-    gap:50px;
-    min-height:auto;
-}
-
-.hero h1{
-    font-size:48px;
-}
-
-.hero p{
-    margin:auto;
-    margin-bottom:35px;
-}
-
-.hero img{
-    max-height:500px;
-}
-
-nav{
-    display:none;
-}
-
-.busca{
-    flex-direction:column;
-    align-items:stretch;
-}
-
-#campo-busca{
-    width:100%;
-}
-
-.filtros{
-    justify-content:center;
-}
-
-.sacola-bar{
-    flex-direction:column;
-    gap:18px;
-    text-align:center;
-    padding:22px;
-}
-
-.btn-finalizar{
-    width:100%;
-}
-
-}
-
-@media(max-width:768px){
-
-.logo{
-    font-size:20px;
-}
-
-.hero h1{
-    font-size:38px;
-}
-
-.hero p{
-    font-size:16px;
-}
-
-.titulo{
-    font-size:32px;
-}
-
-.card img{
-    height:300px;
-}
-
-.info{
-    padding:20px;
-}
-
-.preco{
-    font-size:22px;
-}
-
-}
-
-@media(max-width:480px){
-
-.hero{
-    padding-left:25px;
-    padding-right:25px;
-}
-
-.container{
-    width:95%;
-}
-
-.botao{
-    width:100%;
-    text-align:center;
-}
-
-.filtro{
-    width:100%;
-    text-align:center;
-}
-
-.card{
-    border-radius:20px;
-}
-
-.card img{
-    height:260px;
-}
-
-footer{
-    padding:60px 20px;
-}
-
+/* ==========================================
+   RESPONSIVIDADE MODERNA
+========================================== */
+@media (max-width: 992px) {
+    .hero {
+        grid-template-columns: 1fr;
+        text-align: center;
+        gap: 50px;
+        padding-top: 140px;
+    }
+    .hero h1 {
+        font-size: 48px;
+    }
+    .hero p {
+        margin: 0 auto 30px;
+    }
+    .hero img {
+        height: 400px;
+    }
+    .busca {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    #campo-busca {
+        width: 100%;
+    }
+    .filtros {
+        overflow-x: auto;
+        padding-bottom: 10px;
+        align-content: nowrap;
+    }
 }

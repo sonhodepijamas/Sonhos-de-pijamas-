@@ -1,192 +1,151 @@
-// ==============================
-// LISTA DE PRODUTOS
-// ==============================
+const SUPABASE_URL = "https://enzcxrxvllzybdildypc.supabase.co";
+const SUPABASE_KEY = "sb_publishable_BNCor3Ox8vbZstcZQ4Y-Fw_JVKfsSIa";
 
-let produtos = JSON.parse(localStorage.getItem("produtos")) || [];
+const { createClient } = supabase;
+const client = createClient(SUPABASE_URL, SUPABASE_KEY);
 
-// ==============================
-// CARREGAR TABELA
-// ==============================
+let Produtos = [];
 
-function carregarTabela(){
+async function carregarTabela() {
 
     const tabela = document.getElementById("listaProdutos");
+    tabela.innerHTML = `<tr><td colspan="5" style="text-align:center;">Carregando...</td></tr>`;
+
+    const { data, error } = await client
+        .from("Produtos")
+        .select("*")
+        .order("nome", { ascending: true });
+
+    if (error) {
+        console.error(error);
+        return;
+    }
+
+    Produtos = data || [];
 
     tabela.innerHTML = "";
 
-    produtos.forEach((produto,index)=>{
+    Produtos.forEach((Produto, index) => {
 
         tabela.innerHTML += `
-
         <tr>
-
             <td>
-                <img src="${produto.imagem}" width="70">
+                <img src="${Produto.imagem || 'https://placehold.co/70x70?text=Sem+Foto'}"width="70"
+                onerror="this.src='https://placehold.co/70x70?text=Sem+Foto'">
             </td>
 
-            <td>${produto.nome}</td>
+            <td>${Produto.nome}</td>
 
-            <td>R$ ${produto.preco.toFixed(2)}</td>
+            <td>R$ ${Number(Produto.preco).toFixed(2)}</td>
 
-            <td>${produto.categoria}</td>
+            <td>${Produto.categoria}</td>
 
             <td>
-
-                <button
-                onclick="editarProduto(${index})">
-
-                Editar
-
+                <button onclick="editarProduto('${Produto.id}', ${index})">
+                    Editar
                 </button>
 
-                <button
-                onclick="excluirProduto(${index})">
-
-                Excluir
-
+                <button onclick="excluirProduto('${Produto.id}')">
+                    Excluir
                 </button>
-
             </td>
-
-        </tr>
-
-        `;
+        </tr>`;
 
     });
 
 }
 
-// ==============================
-// SALVAR
-// ==============================
+async function cadastrarProduto() {
 
-function salvarProdutos(){
+    const nome = document.getElementById("nome").value.trim();
+    const preco = document.getElementById("preco").value;
+    const categoria = document.getElementById("categoria").value;
+    const arquivoInput = document.getElementById("arquivoimagem");
+    const arquivo = arquivoInput.files[0];
 
-    localStorage.setItem(
-
-        "produtos",
-
-        JSON.stringify(produtos)
-
-    );
-
-}
-
-// ==============================
-// CADASTRAR PRODUTO
-// ==============================
-
-function cadastrarProduto(){
-
-    const nome =
-    document.getElementById("nome").value;
-
-    const preco =
-    parseFloat(document.getElementById("preco").value);
-
-    const categoria =
-    document.getElementById("categoria").value;
-
-    const imagem =
-    document.getElementById("imagem").value;
-
-    if(
-
-        nome==="" ||
-
-        isNaN(preco)
-
-    ){
+    if (!nome || !preco || !categoria || !arquivo) {
 
         alert("Preencha todos os campos.");
-
         return;
 
     }
 
-    produtos.push({
+    const nomeArquivo = `${Date.now()}_${arquivo.name}`
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/\s+/g, "_")
+        .replace(/[^a-zA-Z0-9._-]/g, "");
 
-        nome,
+    const { data: uploadData, error: uploadError } =
+        await client.storage
+            .from("pijamas")
+            .upload(nomeArquivo, arquivo);
 
-        preco,
+    if (uploadError) {
 
-        categoria,
-
-        imagem
-
-    });
-
-    salvarProdutos();
-
-    carregarTabela();
-
-    limparFormulario();
-
-}
-// ==============================
-// EDITAR PRODUTO
-// ==============================
-
-function editarProduto(index){
-
-    const produto = produtos[index];
-
-    document.getElementById("nome").value = produto.nome;
-    document.getElementById("preco").value = produto.preco;
-    document.getElementById("categoria").value = produto.categoria;
-    document.getElementById("imagem").value = produto.imagem;
-
-    produtos.splice(index,1);
-
-    salvarProdutos();
-
-    carregarTabela();
-
-}
-
-// ==============================
-// EXCLUIR PRODUTO
-// ==============================
-
-function excluirProduto(index){
-
-    const confirmar = confirm(
-        "Deseja realmente excluir este produto?"
-    );
-
-    if(!confirmar){
-
+        alert("Erro no upload: " + uploadError.message);
         return;
 
     }
 
-    produtos.splice(index,1);
+    const { data: urlData } = client.storage
+        .from("pijamas")
+        .getPublicUrl(uploadData.path);
 
-    salvarProdutos();
+    const publicUrl = urlData.publicUrl;
 
-    carregarTabela();
+    const { error: insertError } = await client
+        .from("Produtos")
+        .insert([{
+            nome: nome,
+            preco: Number(preco),
+            categoria: categoria,
+            imagem: publicUrl,
+            estoque: 0,
+            ativo: true
+        }]);
 
-}
+    if (insertError) {
 
-// ==============================
-// LIMPAR FORMULÁRIO
-// ==============================
+        alert("Erro ao salvar: " + insertError.message);
+        return;
 
-function limparFormulario(){
+    }
+
+    alert("Produto cadastrado com sucesso!");
 
     document.getElementById("nome").value = "";
     document.getElementById("preco").value = "";
     document.getElementById("categoria").value = "";
-    document.getElementById("imagem").value = "";
-
-}
-
-// ==============================
-// INICIALIZAÇÃO
-// ==============================
-
-window.onload = function(){
+    arquivoInput.value = "";
 
     carregarTabela();
 
 }
+
+async function excluirProduto(id) {
+
+    if (!confirm("Deseja excluir este produto?")) return;
+
+    await client
+        .from("Produtos")
+        .delete()
+        .eq("id", id);
+
+    carregarTabela();
+
+}
+
+function editarProduto(id, index) {
+
+    const p = Produtos[index];
+
+    document.getElementById("nome").value = p.nome;
+    document.getElementById("preco").value = p.preco;
+    document.getElementById("categoria").value = p.categoria;
+
+    alert("Função de atualização ainda não implementada.");
+
+}
+
+window.onload = carregarTabela;
